@@ -1,0 +1,98 @@
+==========================
+📘 VITALOG BACKEND COMMAND GUIDE
+==========================
+
+This file lists all terminal commands you’ll use to set up and manage your Flask + PostgreSQL backend.
+
+-----------------------------------
+🧱 1. CREATE & ACTIVATE VIRTUAL ENV
+-----------------------------------
+# 1️⃣ Create the virtual environment in the ROOT of the project (recommended)
+cd ~/Desktop/vitalog-web
+python3 -m venv .venv
+
+# 2️⃣ Activate it (Mac / Linux)
+source .venv/bin/activate
+
+# 3️⃣ Activate it (Windows)
+.venv\Scripts\activate
+
+# 5️⃣ Run your backend (from Backend folder)
+cd Backend
+python app.py
+
+
+
+-----------------------------------
+🐘 3. CREATE POSTGRESQL DATABASE
+-----------------------------------
+# Create PostgreSQL user (only once)
+createuser -s vitalog_user
+
+# Create database owned by that user
+createdb vitalog_db -O vitalog_user
+
+# Set password for the user
+psql -d vitalog_db -c "ALTER USER vitalog_user WITH PASSWORD 'vitalog_pass';"
+
+# Test connection
+psql -d vitalog_db -U vitalog_user -c "\l"
+
+-----------------------------------
+
+-----------------------------------
+🏗️ 5. CREATE DATABASE TABLES
+-----------------------------------
+# Make sure models.py is defined (e.g. with User class)
+
+# Then run:
+python init_db.py
+
+# Output should be:
+✅ Database tables created successfully!
+Tables: ['users']
+
+# Verify in PostgreSQL
+psql -d vitalog_db -U vitalog_user -c "\dt"
+
+-----------------------------------
+👀 6. VIEW OR TEST DATABASE CONTENT
+-----------------------------------
+# Open the database shell
+psql -d vitalog_db -U vitalog_user
+
+# Inside psql:
+\dt          --> show all tables
+\d users     --> describe "users" table
+SELECT * FROM users;  --> show all users
+\q           --> quit psql
+
+-----------------------------------
+
+
+-----------------------------------
+🧪 8. TEST AUTH ROUTES (examples)
+-----------------------------------
+# Register
+curl -s POST http://127.0.0.1:4000/api/auth/register \
+ -H 'Content-Type: application/json' \
+ -d '{"username":"alaa","email":"a@a.com","password":"123456"}'
+
+# Login
+curl -s POST http://127.0.0.1:4000/api/auth/login \
+ -H 'Content-Type: application/json' \
+ -d '{"email":"a@a.com","password":"123456"}'
+
+# Get current user
+curl -s GET http://127.0.0.1:4000/api/auth/me \
+ -H "Authorization: Bearer <YOUR_TOKEN>"
+
+-----------------------------------
+🧹 9. OPTIONAL: DELETE DATABASE (reset)
+-----------------------------------
+dropdb vitalog_db
+createdb vitalog_db -O vitalog_user
+python init_db.py
+
+-----------------------------------
+
