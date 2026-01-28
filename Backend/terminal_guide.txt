@@ -68,7 +68,12 @@ SELECT * FROM users;  --> show all users
 \q           --> quit psql
 
 -----------------------------------
-
+Model Update → Database Update (Flask-Migrate Reminder)
+Change the model
+Run:
+flask db migrate -m "update"
+Run:
+flask db upgrade
 
 -----------------------------------
 🧪 8. TEST AUTH ROUTES (examples)
@@ -94,5 +99,13 @@ dropdb vitalog_db
 createdb vitalog_db -O vitalog_user
 python init_db.py
 
+
+run db :PgWeb
+Host → 127.0.0.1
+Port → 5432
+User → vitalog_user
+Password → the password you set with ALTER ROLE
+Database → vitalog_db
+SSL Mode → disable
 -----------------------------------
 

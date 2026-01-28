@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+
 type LoginParams = {
   email: string;
   password: string;
@@ -14,6 +16,7 @@ const page = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState("");
+  const { refreshUser } = useAuth();
 
   async function handleLogIn({ email, password }: LoginParams) {
     try {
@@ -22,6 +25,7 @@ const page = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
       const data = await response.json().catch(() => null);
 
@@ -33,7 +37,8 @@ const page = () => {
         return;
       }
       console.log("Logged in successfully:", data);
-      router.push("/homepage");
+      await refreshUser();
+      router.push("/landingpage");
     } catch (error) {
       console.error("Login error:", error);
     }

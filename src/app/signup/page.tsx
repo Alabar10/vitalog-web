@@ -54,6 +54,7 @@ const page = () => {
           password,
           email: email.toLocaleLowerCase().trim(),
         }),
+        credentials: "include",
       });
       const data = await response.json();
       if (!response.ok) {
