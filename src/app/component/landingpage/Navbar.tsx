@@ -86,6 +86,16 @@ const Navbar = ({ variant = "landing", className }: NavbarProps) => {
             >
               Dashboard
             </Link>
+            
+          )}
+          {user && (
+            <Link
+              href="/insights"
+              className="text-white/90 text-xl hover:text-black transition-colors duration-200 "
+            >
+              Insights
+            </Link>
+            
           )}
           {user ? (
             <>

@@ -36,6 +36,11 @@ const Insights: React.FC<InsightsUIProps> = ({ refreshKey }) => {
       msPerDay
     );
   };
+  const isValidWorkout = (e: EntryApi) => {
+    return (
+      typeof e.workout_type === "string" && e.workout_type.trim().length > 0
+    );
+  };
 
   const sleepTarget = 7;
   const waterTarget = 2;
@@ -72,9 +77,7 @@ const Insights: React.FC<InsightsUIProps> = ({ refreshKey }) => {
 
       const weekEntries = data.filter((e) => isInThisWeek(e.day));
 
-      const workoutsThisWeek = weekEntries.filter(
-        (e) => e.workout_type !== null
-      );
+      const workoutsThisWeek = weekEntries.filter(isValidWorkout);
 
       // Count how many workouts
       const workoutCount = workoutsThisWeek.length;
